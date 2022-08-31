@@ -23,5 +23,15 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/kajal.baghel/.m2/repository/io/appium/java-client/4.1.2/java-client-4.1.2.jar" sourcepath="C:/Users/kajal.baghel/.m2/repository/io/appium/java-client/4.1.2/java-client-4.1.2-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="io.appium"/>
+			<attribute name="maven.artifactId" value="java-client"/>
+			<attribute name="maven.version" value="4.1.2"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="/AppiumSample"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

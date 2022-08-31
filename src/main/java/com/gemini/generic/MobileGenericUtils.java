@@ -4,7 +4,7 @@ package com.gemini.generic;
 
 public class MobileGenericUtils extends MobileGlobalVar{
 	
-	 public static String getPlatformName() {
+	 public static String getplatformName() {
 	        String platformName = MobileGlobalVar.appiumProperties.getProperty("platformName");
 //	        String platformNameFromPropertiesFile = MobileGlobalVar.projectProperty.getProperty("platformName");
         String platform = platformName != null ? platformName : "Android";
@@ -14,7 +14,7 @@ public class MobileGenericUtils extends MobileGlobalVar{
 	    public static String getdeviceName() {
 	   // 	System.out.println(System.getProperties());
 	        String deviceName =  MobileGlobalVar.appiumProperties.getProperty("deviceName");
-	        System.out.println(deviceName);
+//	        System.out.println(deviceName);
 //	        String deviceNameFromPropertiesFile = MobileGlobalVar.projectProperty.getProperty("deviceName");
 //	        String device = deviceName != null ? deviceName
 //	                : deviceNameFromPropertiesFile != null ? deviceNameFromPropertiesFile : "Android Emulator";
@@ -47,6 +47,14 @@ public class MobileGenericUtils extends MobileGlobalVar{
 //	                : udidFromPropertiesFile != null ? udidFromPropertiesFile : "192.168.157.102:5555";
 	        return udid;
 	        
+	    }
+	    
+	    public static String getappiumUrl() {
+	        String appiumUrl = MobileGlobalVar.appiumProperties.getProperty("appiumUrl");
+	        System.out.println(appiumUrl);
+//	        String platformNameFromPropertiesFile = MobileGlobalVar.projectProperty.getProperty("platformName");
+        String appium = appiumUrl != null ? appiumUrl : "http://0.0.0.0:4723/wd/hub/";
+	        return appiumUrl;
 	    }
 	    
 	    public static String getProjectName() {

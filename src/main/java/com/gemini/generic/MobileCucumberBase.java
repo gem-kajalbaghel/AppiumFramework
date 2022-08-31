@@ -14,8 +14,9 @@ import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
 import io.cucumber.java.BeforeStep;
 import io.cucumber.java.Scenario;
+import io.cucumber.testng.AbstractTestNGCucumberTests;
 
-public class MobileCucumberBase extends MobileAction {
+public class MobileCucumberBase  extends AbstractTestNGCucumberTests  {
 	
 
 	@BeforeSuite
@@ -23,15 +24,9 @@ public class MobileCucumberBase extends MobileAction {
 		MobileGlobalVar.mobileProperty = PropertyListeners
 				.loadProjectProperties(ClassLoader.getSystemResourceAsStream("mobile.properties"));
 		setCucumberProperties();
-		try {
-			androidInitialisation();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		
+		
 	}
 
 	private void setCucumberProperties() {
@@ -48,16 +43,21 @@ public class MobileCucumberBase extends MobileAction {
 
 	}
 
-//	@BeforeAll
-//	public static void before_all() {
+	@BeforeAll
+	public static void before_all() throws FileNotFoundException, IOException {
+
 //		MobileGenericUtils.initializeMobileGlobalVar();
-////		ProjectApiUrl.initializeApiUrl();
-////		ProjectSampleJson.loadSampleJson();
+//		ProjectApiUrl.initializeApiUrl();
+//		ProjectSampleJson.loadSampleJson();
 //		GemTestReporter.startSuite(QuanticGlobalVar.projectName, QuanticGlobalVar.environment);
-//	}
-//
-//	@Before
-//	public void before(Scenario scenario) {
+		
+		MobileDriverManager.androidInitialisation();
+	}
+
+	@Before
+	public void before(Scenario scenario) throws FileNotFoundException, IOException {
+		
+//		MobileDriverManager.androidInitialisation();	}
 //		String testcaseName = scenario.getName();
 //		String featureFileName = new File(scenario.getUri()).getName();
 ////		DriverManager.initializeBrowser(QuanticGlobalVar.browserInTest);
@@ -67,11 +67,12 @@ public class MobileCucumberBase extends MobileAction {
 ////		DriverAction.launchUrl(ProjectProperties.getProperty("baseURL"));
 //		GemTestReporter.startTestCase(testcaseName, featureFileName.substring(0, featureFileName.lastIndexOf('.')),
 //				false);
-//	}
+	}
 
 
 	@BeforeStep
 	public void before_step(Scenario scenario){
+	
 		System.out.println(scenario.getId());
 	}
 
@@ -80,11 +81,11 @@ public class MobileCucumberBase extends MobileAction {
 
 	}
 
-//	@After
-//	public void after(Scenario scenario) {
-//		DriverManager.closeDriver();
-//		GemTestReporter.endTestCase();
-//	}
+	@After
+	public void after(Scenario scenario) {
+		MobileDriverManager.closeDriver();
+	//	GemTestReporter.endTestCase();
+	}
 
 //	@AfterAll
 //	public static void after_all()  {

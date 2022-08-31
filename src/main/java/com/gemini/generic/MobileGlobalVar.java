@@ -18,5 +18,6 @@ public class MobileGlobalVar {
 	public static String testCaseFileName;
     public static String testCaseDataJsonPath;
     public static Properties appiumProperties;
+    public static String appiumUrl;
 
 }
