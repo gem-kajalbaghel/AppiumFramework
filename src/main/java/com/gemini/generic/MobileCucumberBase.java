@@ -51,12 +51,12 @@ public class MobileCucumberBase  extends AbstractTestNGCucumberTests  {
 //		ProjectSampleJson.loadSampleJson();
 //		GemTestReporter.startSuite(QuanticGlobalVar.projectName, QuanticGlobalVar.environment);
 		
-		MobileDriverManager.androidInitialisation();
+	//	MobileDriverManager.androidInitialisation();
 	}
 
 	@Before
 	public void before(Scenario scenario) throws FileNotFoundException, IOException {
-		
+		MobileDriverManager.androidInitialisation();
 //		MobileDriverManager.androidInitialisation();	}
 //		String testcaseName = scenario.getName();
 //		String featureFileName = new File(scenario.getUri()).getName();

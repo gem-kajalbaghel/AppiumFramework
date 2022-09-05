@@ -15,12 +15,10 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-
-
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.touch.WaitOptions;
@@ -52,9 +50,9 @@ public class MobileAction extends MobileGenericUtils
 	
 	
 	
-	 public static MobileElement getElement(By locator) {
+	 public static WebElement getElement(By locator) {
 	        try {
-	            MobileElement element = (MobileElement) MobileDriverManager.getAppiumDriver().findElement(locator);
+	            WebElement element = (WebElement) MobileDriverManager.getAppiumDriver().findElement(locator);
 	            return element;
 	        } catch (Exception var2) {
 	            var2.printStackTrace();
@@ -64,7 +62,7 @@ public class MobileAction extends MobileGenericUtils
 
 	    public static String getElementText(By locator) {
 	        try {
-	            MobileElement element = getElement(locator);
+	            WebElement element = getElement(locator);
 	            String elementText = element.getText();
 	            return elementText;
 	        } catch (Exception var3) {
@@ -75,7 +73,7 @@ public class MobileAction extends MobileGenericUtils
 
 	    public static void click(By locator) throws IOException {
 	        try {
-	            MobileElement element = getElement(locator);
+	            WebElement element = getElement(locator);
 	            element.click();
 	        } catch (Exception var2) {
 	            //GemTestReporter.addTestStep("Some error occur while Click", "Error Occur", STATUS.FAIL, takeSnapShot());
@@ -87,7 +85,7 @@ public class MobileAction extends MobileGenericUtils
 	    public static void tap(By locator){
 	        try {
 	            TouchActions action = new TouchActions(MobileDriverManager.getAppiumDriver());
-	            MobileElement element= getElement(locator);
+	            WebElement element= getElement(locator);
 	            action.singleTap(element);
 	            action.perform();
 
@@ -98,12 +96,12 @@ public class MobileAction extends MobileGenericUtils
 	        }
 
 	    }
-	    
-	
+
+
 	    public static void doubleTap(By locator){
 	        try {
 	            TouchActions action = new TouchActions(MobileDriverManager.getAppiumDriver());
-	            MobileElement element= getElement(locator);
+	            WebElement element= getElement(locator);
 	            action.doubleTap(element);
 	            action.perform();
 
@@ -151,7 +149,7 @@ public class MobileAction extends MobileGenericUtils
 	    public static void longPress (By locator){
 	        try {
 	            TouchActions action = new TouchActions(MobileDriverManager.getAppiumDriver());
-	            MobileElement element=getElement(locator);
+	            WebElement element=getElement(locator);
 	            action.longPress(element);
 	            action.perform();
 
@@ -198,7 +196,7 @@ public class MobileAction extends MobileGenericUtils
 	            e.printStackTrace();
 	        }
 	    }
-//	////////////////////////////////////////NAVIGATION//////////////////////////////////////////////////////
+////	////////////////////////////////////////NAVIGATION//////////////////////////////////////////////////////
 
 
 	    public static void navigateBack(Boolean report) {
@@ -263,9 +261,9 @@ public class MobileAction extends MobileGenericUtils
 	              e.printStackTrace();
 	        }
 	    }
-	    //////////////////////////Mouse///////////////////////////////////////////////////////
+	    ////////////////////////Mouse///////////////////////////////////////////////////////
 
-	    public static void doubleClick(MobileElement element){
+	    public static void doubleClick(WebElement element){
 	        try {
 	            Actions act = new Actions(MobileDriverManager.getAppiumDriver());
 	            act.doubleClick(element).perform();
@@ -278,9 +276,6 @@ public class MobileAction extends MobileGenericUtils
 	        }
 	    }
 
-	
-
-	    
 	    
 	    
 	    
