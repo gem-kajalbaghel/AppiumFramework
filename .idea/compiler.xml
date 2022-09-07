@@ -10,5 +10,8 @@
         <module name="appiumTrial" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="appiumTrial" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
