@@ -35,7 +35,7 @@ public class MobileDriverManager extends MobileGenericUtils{
 	public static void closeDriver() {
 		try {
 	//		GemTestReporter.addTestStep("Close Driver", "Driver Close Successful", STATUS.PASS);
-			getAppiumDriver().close();
+			getAppiumDriver().quit();
 		} catch (Exception e) {
 	//		GemTestReporter.addTestStep("Close Driver", "Driver Close Failed", STATUS.FAIL);
 			e.printStackTrace();

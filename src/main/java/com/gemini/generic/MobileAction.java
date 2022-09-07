@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import com.gemini.reporting.GemTestReporter;
+import com.gemini.reporting.STATUS;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -75,10 +77,25 @@ public class MobileAction extends MobileGenericUtils {
             WebElement element = getElement(locator);
             element.click();
         } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Click", "Error Occur", STATUS.FAIL, takeSnapShot());
+            GemTestReporter.addTestStep("Some error occur while Click", "Error Occur", STATUS.FAIL);
             var2.printStackTrace();
         }
     }
+
+    public static void click(By locator, String elementLabel) throws IOException {
+        try {
+            WebElement element = getElement(locator);
+            element.click();
+            GemTestReporter.addTestStep("Click on ", "Click Successful on " + elementLabel, STATUS.PASS);
+                  //  MobileAction.takeSnapShot());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            GemTestReporter.addTestStep("Click on ", "Click Failed on " + elementLabel, STATUS.FAIL);
+                  //  MobileAction.takeSnapShot());
+        }
+    }
+
 
     public static void typeText(By locator, String textToEnter) {
         try {
