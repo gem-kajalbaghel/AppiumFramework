@@ -16,6 +16,9 @@ import java.util.concurrent.TimeUnit;
 import com.gemini.reporting.GemTestReporter;
 import com.gemini.reporting.STATUS;
 import com.gemini.utils.GemJarGlobalVar;
+import io.appium.java_client.AppiumBy;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -295,6 +298,170 @@ public class MobileAction extends MobileGenericUtils {
         }
     }
 
+    public static WebElement scrollToElement(String text) {
+        try {
+            MobileDriverManager.getAppiumDriver().findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView" +
+                    "(text(\"" + text + "\"));"));
+        } catch (Exception var2) {
+            var2.printStackTrace();
+        }
+        return null;
+    }
+    //    moveToElement -> Move the mouse by an offset of the specificed element
+    public static void moveToElement(By locator,int xOffset,int yOffset){
+        try{
+            Actions act = new Actions(MobileDriverManager.getAppiumDriver());
+            WebElement element = MobileDriverManager.getAppiumDriver().findElement(locator);
+            act.moveToElement(element,xOffset,yOffset);
+            act.perform();
+//            GemTestReporter.addTestStep("MoveToElement ", "MoveToElement Successful , STATUS.PASS,
+//                  DriverAction.takeSnapShot());
+
+        }catch (Exception e){
+//            GemTestReporter.addTestStep("MoveToElement", "MoveToElement Failed on " , STATUS.FAIL,
+//                   DriverAction.takeSnapShot());
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void moveToElement(WebElement element,int xOffset,int yOffset){
+        try {
+            Actions act= new Actions(MobileDriverManager.getAppiumDriver());
+            act.moveToElement(element,xOffset,yOffset);
+            //        GemTestReporter.addTestStep("MoveToElement ", "MoveToElement Successful , STATUS.PASS,
+//                  DriverAction.takeSnapShot());
+
+        }catch (Exception e){
+            //            GemTestReporter.addTestStep("MoveToElement", "MoveToElement Failed on " , STATUS.FAIL,
+//                   DriverAction.takeSnapShot());
+            e.printStackTrace();
+        }
+    }
+
+    // ButtonDown->Click and hold the left mouse button at the current mouse coordinates
+    public static void buttonDown(By locator ){
+        try {
+            Actions act = new Actions(MobileDriverManager.getAppiumDriver());
+            WebElement element =  MobileDriverManager.getAppiumDriver().findElement(locator);
+            act.moveToElement(element);
+            act.clickAndHold();
+            act.perform();
+            //        GemTestReporter.addTestStep("ButtonDown", "ButtonDown Successful , STATUS.PASS,
+//                  DriverAction.takeSnapShot());
+        }catch (Exception e){
+            e.printStackTrace();
+            //            GemTestReporter.addTestStep("ButtonDown", "ButtonDown Failed on " , STATUS.FAIL,
+//                   DriverAction.takeSnapShot());
+        }
+    }
+    // ButtonUp->Releases the mouse button previously held
+//    Must be called after the buttonDown
+    public static void buttonUp(By locator, int xOffset,int yOffset){
+        try{
+            Actions act = new Actions(MobileDriverManager.getAppiumDriver());
+            WebElement element= MobileDriverManager.getAppiumDriver().findElement(locator);
+            act.moveToElement(element);
+            act.clickAndHold();
+            act.moveToElement(element, xOffset,yOffset);
+            act.release();
+            act.perform();
+            //        GemTestReporter.addTestStep("ButtonUp", "ButtonUp Successful , STATUS.PASS,
+//                  DriverAction.takeSnapShot());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            //            GemTestReporter.addTestStep("ButtonUp", "ButtonUp Failed on " , STATUS.FAIL,
+//                   DriverAction.takeSnapShot());
+        }
+    }
+
+    public static void buttonUp(WebElement element,int xOffset,int yOffset){
+        try{
+            Actions action = new Actions(MobileDriverManager.getAppiumDriver());
+            action.moveToElement(element);
+            action.clickAndHold();
+            action.moveToElement(element, xOffset,yOffset);
+            action.release();
+            action.perform();
+            //        GemTestReporter.addTestStep("ButtonUp", "ButtonUp Successful , STATUS.PASS,
+//                  DriverAction.takeSnapShot());
+        } catch (Exception e){
+            e.printStackTrace();
+            //            GemTestReporter.addTestStep("ButtonUp", "ButtonUp Failed on " , STATUS.FAIL,
+//                   DriverAction.takeSnapShot());
+        }
+    }
+
+    /////////////////////////CLEAR/////////////////////////////////////////
+    public static void clear(By locator){
+        try {
+            WebElement element = MobileDriverManager.getAppiumDriver().findElement(locator);
+            element.clear();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void lockDevice  (){
+        try{
+
+            ((AndroidDriver) MobileDriverManager.getAppiumDriver()).lockDevice();
+
+            // getAppiumDriver.lockDevice();
+            // ((AndroidDriver) MobileDriverManager.getAppiumDriver()).lockDevice();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public static void pressBackButton(){
+        try {
+            ((AndroidDriver) MobileDriverManager.getAppiumDriver()).pressKey(new KeyEvent(AndroidKey.BACK));
+//            ((AndroidDriver) MobileDriverManager.getAppiumDriver()).pressKey(new KeyEvent(AndroidKey.BACK));;
+        } catch (Exception var2) {
+            var2.printStackTrace();
+        }
+    }
+
+    public static void pressHomeButton(){
+        try {
+            ((AndroidDriver) MobileDriverManager.getAppiumDriver()).pressKey(new KeyEvent(AndroidKey.HOME));
+        } catch (Exception var2) {
+            var2.printStackTrace();
+        }
+    }
+/////////////////////////////////////////////DRAGandDrop////////////////////////////////
+
+    public static void dragAndDrop(WebElement from, WebElement To, boolean report)  {
+        try {
+            WebElement from1 = MobileDriverManager.getAppiumDriver().findElement((By) from);
+            WebElement To1 = MobileDriverManager.getAppiumDriver().findElement((By) To);
+            Actions act = new Actions(MobileDriverManager.getAppiumDriver());
+            act.dragAndDrop(from1, To1).build().perform();
+//            if (report) {
+//                GemTestReporter.addTestStep("Drag and Drop", "Success", STATUS.PASS, DriverAction.takeSnapShot());
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+//            GemTestReporter.addTestStep("Some error occur while Drag and drop", "Error Occur", STATUS.FAIL,
+//                    DriverAction.takeSnapShot());
+        }
+    }
+    // upload file
+    public static void fileUpload(WebElement element, String path)  {
+        try {
+//            MobileDriverManager.getAppiumDriver().getElement((By) element).sendKeys(path);
+            getElement((By) element).sendKeys(path);
+//            GemTestReporter.addTestStep("File Upload", "Successfully", STATUS.PASS, takeSnapShot());
+        } catch (Exception e) {
+            e.printStackTrace();
+//            GemTestReporter.addTestStep("Some error occur", "Error Occur", STATUS.FAIL,
+//            MobileDriverManager.getAppiumDriver().takeSnapShot());
+        }
+    }
+
+
+
     public static String takeSnapShot() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String fileWithPath;
@@ -318,89 +485,6 @@ public class MobileAction extends MobileGenericUtils {
     }
 
 
-//	public static void refresh() {
-////    int deviceWidth = getDriver().manage().window().getSize().getWidth();
-////    int deviceHeight = getDriver().manage().window().getSize().getHeight();
-////
-////    int midX = (deviceWidth / 2);
-////    int midY = (deviceHeight / 2);
-//    int bottomEdge = (int) (deviceHeight * 0.85f);
-//
-//    new TouchAction(getDriver())
-//            .longPress(midX,midY)
-//            .moveTo(midX, bottomEdge)
-//           .release().perform();
-//    JavascriptExecutor js = JavascriptExecutor;
-//    Map<String, Object> params = new HashMap<>();
-//    params.put("direction", "down");
-//    params.put("velocity", 3000);
-//    js.executeScript("mobile: swipe", params);
-//}
-
-//	public void swipeScreen(Direction dir) {
-//	    System.out.println("swipeScreen(): dir: '" + dir + "'");
-//
-//
-//	    final int ANIMATION_TIME = 200; // ms
-//
-//	    final int PRESS_TIME = 200; // ms
-//
-//	    int edgeBorder = 10; // better avoid edges
-//	    PointOption pointOptionStart, pointOptionEnd;
-//
-//	    // init screen variables
-//	//    Dimension dims = driver.manage().window().getSize();
-//
-//	    // init start point = center of screen
-//	    pointOptionStart = PointOption.point(dims.width / 2, dims.height / 2);
-//
-//	    switch (dir) {
-//	        case DOWN: // center of footer
-//	            pointOptionEnd = PointOption.point(dims.width / 2, dims.height - edgeBorder);
-//	            break;
-//	        case UP: // center of header
-//	            pointOptionEnd = PointOption.point(dims.width / 2, edgeBorder);
-//	            break;
-//	        case LEFT: // center of left side
-//	            pointOptionEnd = PointOption.point(edgeBorder, dims.height / 2);
-//	            break;
-//	        case RIGHT: // center of right side
-//	            pointOptionEnd = PointOption.point(dims.width - edgeBorder, dims.height / 2);
-//	            break;
-//	        default:
-//	            throw new IllegalArgumentException("swipeScreen(): dir: '" + dir + "' NOT supported");
-//	    }
-//
-//	    // execute swipe using TouchAction
-//	    try {
-//	//        new TouchAction(driver)
-//	//                .press(pointOptionStart)
-//	                // a bit more reliable when we add small wait
-//	 //               .waitAction(WaitOptions.waitOptions(Duration.ofMillis(PRESS_TIME)))
-//	//                .moveTo(pointOptionEnd)
-//	 //               .release().perform();
-//	    } catch (Exception e) {
-//	        System.err.println("swipeScreen(): TouchAction FAILED\n" + e.getMessage());
-//	        return;
-//	    }
-//
-//	    // always allow swipe action to complete
-//	    try {
-//	        Thread.sleep(ANIMATION_TIME);
-//	    } catch (InterruptedException e) {
-//	        // ignore
-//	    }
-//	}
-//
-//	public enum Direction {
-//	    UP,
-//	    DOWN,
-//	    LEFT,
-//	    RIGHT;
-//	}
-//	
-//	
-//	
 
 }
 
