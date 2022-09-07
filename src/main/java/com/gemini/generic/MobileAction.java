@@ -6,16 +6,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import com.gemini.utils.GemJarGlobalVar;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.*;
+import com.gemini.reporting.GemTestReporter;
+import com.gemini.reporting.STATUS;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -75,10 +77,25 @@ public class MobileAction extends MobileGenericUtils {
             WebElement element = getElement(locator);
             element.click();
         } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Click", "Error Occur", STATUS.FAIL, takeSnapShot());
+            GemTestReporter.addTestStep("Some error occur while Click", "Error Occur", STATUS.FAIL);
             var2.printStackTrace();
         }
     }
+
+    public static void click(By locator, String elementLabel) throws IOException {
+        try {
+            WebElement element = getElement(locator);
+            element.click();
+            GemTestReporter.addTestStep("Click on ", "Click Successful on " + elementLabel, STATUS.PASS);
+                  //  MobileAction.takeSnapShot());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            GemTestReporter.addTestStep("Click on ", "Click Failed on " + elementLabel, STATUS.FAIL);
+                  //  MobileAction.takeSnapShot());
+        }
+    }
+
 
     public static void typeText(By locator, String textToEnter) {
         try {
@@ -276,28 +293,6 @@ public class MobileAction extends MobileGenericUtils {
 //	            GemTestReporter.addTestStep("Double Click on ", "Double Click Failed on " + elementLabel, STATUS.FAIL,
 //	                    DriverAction.takeSnapShot());
         }
-    }
-
-    public static String takeSnapShot() {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        String fileWithPath;
-        if(GemJarGlobalVar.reportLocation!=null) {
-            fileWithPath = GemJarGlobalVar.reportLocation + "/SS/SS" + timestamp.getTime() + ".png";
-        } else {
-            fileWithPath = "report" + "/SS/SS" + timestamp.getTime() + ".png";
-        }
-        WebDriver webdriver = MobileDriverManager.getAppiumDriver();
-        TakesScreenshot scrShot = (TakesScreenshot)webdriver;
-        File SrcFile = (File)scrShot.getScreenshotAs(OutputType.FILE);
-        File DestFile = new File(fileWithPath);
-
-        try {
-            FileUtils.copyFile(SrcFile, DestFile);
-        } catch (IOException var7) {
-            var7.printStackTrace();
-        }
-
-        return "SS/SS" + timestamp.getTime() + ".png";
     }
 
 
