@@ -1,0 +1,7 @@
+com\gemini\generic\MobileGenericUtils.class
+com\gemini\generic\MobileDriverManager.class
+com\gemini\generic\MobileCucumberBase.class
+com\gemini\generic\ProjectProperties.class
+com\gemini\generic\PropertyListeners.class
+com\gemini\generic\MobileGlobalVar.class
+com\gemini\generic\MobileAction.class
