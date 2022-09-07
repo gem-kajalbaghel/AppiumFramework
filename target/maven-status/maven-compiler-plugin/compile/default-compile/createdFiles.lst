@@ -1,4 +1,3 @@
-com\gemini\generic\random.class
 com\gemini\generic\MobileGenericUtils.class
 com\gemini\generic\MobileDriverManager.class
 com\gemini\generic\MobileCucumberBase.class

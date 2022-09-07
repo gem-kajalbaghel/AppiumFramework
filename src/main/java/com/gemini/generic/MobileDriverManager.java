@@ -1,5 +1,6 @@
 package com.gemini.generic;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,10 +22,6 @@ public class MobileDriverManager extends MobileGenericUtils{
 	
 //	static AppiumDriver driver;
 	private static ThreadLocal<AppiumDriver> driver = new ThreadLocal<AppiumDriver>();
-	
-//	private static AndroidDriver driver = new ThreadLocal<AppiumDriver>();
-
-	
 	public static void setAppiumDriver(AppiumDriver AppiumDriver) {
 		driver.set(AppiumDriver);
 	}

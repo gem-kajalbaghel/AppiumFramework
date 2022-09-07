@@ -61,7 +61,6 @@ public class MobileCucumberBase  extends AbstractTestNGCucumberTests  {
 //		String testcaseName = scenario.getName();
 //		String featureFileName = new File(scenario.getUri()).getName();
 ////		DriverManager.initializeBrowser(QuanticGlobalVar.browserInTest);
-////		DriverAction.maximizeBrowser();
 ////		DriverAction.setImplicitTimeOut(Long.parseLong(ProjectProperties.getProperty("browserTimeOut")));
 ////		DriverAction.setPageLoadTimeOut(Long.parseLong(ProjectProperties.getProperty("browserTimeOut")));
 ////		DriverAction.launchUrl(ProjectProperties.getProperty("baseURL"));
@@ -84,7 +83,8 @@ public class MobileCucumberBase  extends AbstractTestNGCucumberTests  {
 	@After
 	public void after(Scenario scenario) {
 		MobileDriverManager.closeDriver();
-	//	GemTestReporter.endTestCase();
+		System.out.print("Close Driver");
+		//	GemTestReporter.endTestCase();
 	}
 
 //	@AfterAll
