@@ -8,6 +8,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -41,33 +43,74 @@ public class MobileDriverManager extends MobileGenericUtils{
 	}
 	
 
-	public static void androidInitialisation() throws FileNotFoundException, IOException {
+	public static void driverInitialisation() throws FileNotFoundException, IOException {
 		
-		MobileAction.mobileProperty();
-	    File classpathRoot = new File(System.getProperty("user.dir"));
-        File appDir = new File(classpathRoot, "/app");
-        File app = new File(appDir, getapp());
-		
-		DesiredCapabilities cap = new DesiredCapabilities();
-		
-		cap.setCapability("deviceName",getdeviceName());
-		cap.setCapability("platformName",getplatformName());
-		cap.setCapability("platformVersion", getplatformVersion());
-		cap.setCapability("udid", getudid());
-		cap.setCapability("app", app.getAbsolutePath());
-		
-		 try {
-        	setAppiumDriver( new AppiumDriver(new URL(getappiumUrl()), cap));                    
+//		MobileAction.mobileProperty();
+//	    File classpathRoot = new File(System.getProperty("user.dir"));
+//        File appDir = new File(classpathRoot, "/app");
+//        File app = new File(appDir, getapp());
+//
+//		DesiredCapabilities cap = new DesiredCapabilities();
+//
+//		cap.setCapability("deviceName",getdeviceName());
+//		cap.setCapability("platformName",getplatformName());
+//		cap.setCapability("platformVersion", getplatformVersion());
+//		cap.setCapability("udid", getudid());
+//		cap.setCapability("app", app.getAbsolutePath());
+
+		try {
+			if(getplatformName().equalsIgnoreCase("Android")){
+				androidStart();
+			} else if (getplatformName().equalsIgnoreCase("iOS")) {
+				iOSStart();
+			}
 			getAppiumDriver().manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
 
-        } catch (MalformedURLException e) {       
-        	
-        }
+		} catch (Exception e) {
 
-		
+		}
+	}
 
-		
-		
+
+	// shubham
+	public static void androidStart() {
+		try {
+			File classpathRoot = new File(System.getProperty("user.dir"));
+			File appDir = new File(classpathRoot, "/app");
+			File app = new File(appDir, getapp());
+
+			DesiredCapabilities cap = new DesiredCapabilities();
+			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, getplatformName());
+			cap.setCapability(MobileCapabilityType.PLATFORM_VERSION, getplatformVersion());
+			cap.setCapability(MobileCapabilityType.DEVICE_NAME, getdeviceName());
+			cap.setCapability(MobileCapabilityType.UDID, getudid());
+			cap.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
+
+			setAppiumDriver(new AndroidDriver(new URL(getappiumUrl()), cap));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void iOSStart() {
+		try {
+			File classpathRoot = new File(System.getProperty("user.dir"));
+			File appDir = new File(classpathRoot, "/app");
+			File app = new File(appDir, getapp());
+
+			DesiredCapabilities cap = new DesiredCapabilities();
+			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, getplatformName());
+			cap.setCapability(MobileCapabilityType.PLATFORM_VERSION, getplatformVersion());
+			cap.setCapability(MobileCapabilityType.DEVICE_NAME, getdeviceName());
+			cap.setCapability(MobileCapabilityType.UDID, getudid());
+			cap.setCapability("bundleId", getBundelID());
+			cap.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
+
+			setAppiumDriver(new IOSDriver(new URL(getappiumUrl()), cap));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 
