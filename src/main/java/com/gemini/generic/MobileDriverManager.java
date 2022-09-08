@@ -8,6 +8,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import com.gemini.reporting.GemTestReporter;
+import com.gemini.reporting.STATUS;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.WebDriver;
@@ -21,8 +23,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 
 public class MobileDriverManager extends MobileGenericUtils{
-	
-//	static AppiumDriver driver;
+
 	private static ThreadLocal<AppiumDriver> driver = new ThreadLocal<AppiumDriver>();
 	public static void setAppiumDriver(AppiumDriver AppiumDriver) {
 		driver.set(AppiumDriver);
@@ -34,29 +35,16 @@ public class MobileDriverManager extends MobileGenericUtils{
 
 	public static void closeDriver() {
 		try {
-	//		GemTestReporter.addTestStep("Close Driver", "Driver Close Successful", STATUS.PASS);
+			GemTestReporter.addTestStep("Close Driver", "Driver Close Successful", STATUS.PASS);
 			getAppiumDriver().quit();
 		} catch (Exception e) {
-	//		GemTestReporter.addTestStep("Close Driver", "Driver Close Failed", STATUS.FAIL);
+			GemTestReporter.addTestStep("Close Driver", "Driver Close Failed", STATUS.FAIL);
 			e.printStackTrace();
 		}
 	}
 	
 
 	public static void driverInitialisation() throws FileNotFoundException, IOException {
-		
-//		MobileAction.mobileProperty();
-//	    File classpathRoot = new File(System.getProperty("user.dir"));
-//        File appDir = new File(classpathRoot, "/app");
-//        File app = new File(appDir, getapp());
-//
-//		DesiredCapabilities cap = new DesiredCapabilities();
-//
-//		cap.setCapability("deviceName",getdeviceName());
-//		cap.setCapability("platformName",getplatformName());
-//		cap.setCapability("platformVersion", getplatformVersion());
-//		cap.setCapability("udid", getudid());
-//		cap.setCapability("app", app.getAbsolutePath());
 
 		try {
 			if(getplatformName().equalsIgnoreCase("Android")){

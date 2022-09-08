@@ -44,19 +44,13 @@ public class MobileCucumberBase extends AbstractTestNGCucumberTests {
     @BeforeAll
     public static void before_all() throws FileNotFoundException, IOException {
 
-//		MobileGenericUtils.initializeMobileGlobalVar();
-//		ProjectApiUrl.initializeApiUrl();
-//		ProjectSampleJson.loadSampleJson();
-//		GemTestReporter.startSuite(QuanticGlobalVar.projectName, QuanticGlobalVar.environment);
-
+		MobileGenericUtils.initializeMobileGlobalVariables();
         //	MobileDriverManager.androidInitialisation();
         MobileAction.mobileProperty();
-
         System.out.println("Starting Report - TestSuite");
         String projectName = MobileGenericUtils.getProjectName();
         String environmentName = MobileGenericUtils.getProjectEnvironment();
-
-//        GemTestReporter.startSuite("Default Name", "Default env");
+        //        GemTestReporter.startSuite("Default Name", "Default env");
         GemTestReporter.startSuite(projectName, environmentName);
     }
 
@@ -67,11 +61,6 @@ public class MobileCucumberBase extends AbstractTestNGCucumberTests {
 //		MobileDriverManager.androidInitialisation();	}
         String testcaseName = scenario.getName();
         String featureFileName = new File(scenario.getUri()).getName();
-////		DriverManager.initializeBrowser(QuanticGlobalVar.browserInTest);
-////		DriverAction.maximizeBrowser();
-////		DriverAction.setImplicitTimeOut(Long.parseLong(ProjectProperties.getProperty("browserTimeOut")));
-////		DriverAction.setPageLoadTimeOut(Long.parseLong(ProjectProperties.getProperty("browserTimeOut")));
-////		DriverAction.launchUrl(ProjectProperties.getProperty("baseURL"));
         System.out.println("Starting Report - TestCase");
         GemTestReporter.startTestCase(testcaseName, featureFileName.substring(0, featureFileName.lastIndexOf('.')),
                 false);

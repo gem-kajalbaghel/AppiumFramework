@@ -89,13 +89,13 @@ public class MobileAction extends MobileGenericUtils {
         try {
             WebElement element = getElement(locator);
             element.click();
-            GemTestReporter.addTestStep("Click on ", "Click Successful on " + elementLabel, STATUS.PASS);
-                  //  MobileAction.takeSnapShot());
+            GemTestReporter.addTestStep("Click on ", "Click Successful on " + elementLabel, STATUS.PASS,
+                   MobileAction.takeSnapShot());
 
         } catch (Exception e) {
             e.printStackTrace();
-            GemTestReporter.addTestStep("Click on ", "Click Failed on " + elementLabel, STATUS.FAIL);
-                  //  MobileAction.takeSnapShot());
+            GemTestReporter.addTestStep("Click on ", "Click Failed on " + elementLabel, STATUS.FAIL,
+                  MobileAction.takeSnapShot());
         }
     }
 
@@ -105,7 +105,7 @@ public class MobileAction extends MobileGenericUtils {
             WebElement element = getElement(locator);
             element.sendKeys(textToEnter);
         } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Click", "Error Occur", STATUS.FAIL, takeSnapShot());
+            GemTestReporter.addTestStep("Some error occur while Click", "Error Occur", STATUS.FAIL, takeSnapShot());
             var2.printStackTrace();
         }
     }
@@ -117,7 +117,7 @@ public class MobileAction extends MobileGenericUtils {
             action.singleTap(element);
             action.perform();
         } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
+            GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
             var2.printStackTrace();
         }
     }
@@ -130,7 +130,7 @@ public class MobileAction extends MobileGenericUtils {
             action.doubleTap(element);
             action.perform();
         } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
+            GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
             var2.printStackTrace();
         }
     }
@@ -142,7 +142,7 @@ public class MobileAction extends MobileGenericUtils {
             action.move(X, Y);
             action.perform();
         } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
+            GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
             var2.printStackTrace();
         }
     }
@@ -154,7 +154,7 @@ public class MobileAction extends MobileGenericUtils {
             action.up(X, Y);
             action.perform();
         } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
+            GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
             var2.printStackTrace();
         }
     }
@@ -166,7 +166,7 @@ public class MobileAction extends MobileGenericUtils {
             action.down(X, Y);
             action.perform();
         } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
+            GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
             var2.printStackTrace();
         }
     }
@@ -180,7 +180,7 @@ public class MobileAction extends MobileGenericUtils {
 
 
         } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
+            GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
             var2.printStackTrace();
         }
     }
@@ -224,11 +224,11 @@ public class MobileAction extends MobileGenericUtils {
     public static void navigateBack(Boolean report) {
         try {
             MobileDriverManager.getAppiumDriver().navigate().back();
-//	            if (report) {
-//	                GemTestReporter.addTestStep("Navigate Back", "Navigate Back Successful", STATUS.PASS, DriverAction.takeSnapShot());
-//	            }
+	            if (report) {
+	                GemTestReporter.addTestStep("Navigate Back", "Navigate Back Successful", STATUS.PASS, MobileAction.takeSnapShot());
+	            }
         } catch (Exception e) {
-//	            GemTestReporter.addTestStep("Navigate Back", "Navigate Back Failed", STATUS.FAIL, DriverAction.takeSnapShot());
+	            GemTestReporter.addTestStep("Navigate Back", "Navigate Back Failed", STATUS.FAIL, MobileAction.takeSnapShot());
             e.printStackTrace();
         }
     }
@@ -236,11 +236,11 @@ public class MobileAction extends MobileGenericUtils {
     public static void refresh(Boolean report) {
         try {
             MobileDriverManager.getAppiumDriver().navigate().refresh();
-//	            if (report) {
-//	                GemTestReporter.addTestStep("Refresh Page", "Page Refresh Successful", STATUS.PASS, DriverAction.takeSnapShot());
-//	            }
+	            if (report) {
+	                GemTestReporter.addTestStep("Refresh Page", "Page Refresh Successful", STATUS.PASS, MobileAction.takeSnapShot());
+	            }
         } catch (Exception e) {
-//	            GemTestReporter.addTestStep("Refresh Page", "Page Refresh Failed", STATUS.FAIL, DriverAction.takeSnapShot());
+	            GemTestReporter.addTestStep("Refresh Page", "Page Refresh Failed", STATUS.FAIL, MobileAction.takeSnapShot());
             e.printStackTrace();
         }
     }
@@ -248,11 +248,11 @@ public class MobileAction extends MobileGenericUtils {
     public static void navigateForward(Boolean report) {
         try {
             MobileDriverManager.getAppiumDriver().navigate().forward();
-//	            if (report) {
-//	                GemTestReporter.addTestStep("Navigate Forward", "Forward Navigation Successful", STATUS.PASS, DriverAction.takeSnapShot());
-            //
+	            if (report) {
+                    GemTestReporter.addTestStep("Navigate Forward", "Forward Navigation Successful", STATUS.PASS, MobileAction.takeSnapShot());
+                }
         } catch (Exception e) {
-//	            GemTestReporter.addTestStep("Navigate Forward", "Forward Navigation Failed", STATUS.FAIL, DriverAction.takeSnapShot());
+	            GemTestReporter.addTestStep("Navigate Forward", "Forward Navigation Failed", STATUS.FAIL, MobileAction.takeSnapShot());
             e.printStackTrace();
         }
     }
@@ -260,12 +260,12 @@ public class MobileAction extends MobileGenericUtils {
     public static void navigateToUrl(String url, Boolean report) {
         try {
             MobileDriverManager.getAppiumDriver().navigate().to(url);
-//	                 if (report){
-//	                     GemTestReporter.addTestStep("Navigate Forward", "Forward Navigation Successful", STATUS.PASS, DriverAction.takeSnapShot());
-            //
-//	                 }
+	                 if (report){
+	                     GemTestReporter.addTestStep("Navigate Forward", "Forward Navigation Successful", STATUS.PASS, MobileAction.takeSnapShot());
+
+	                 }
         } catch (Exception e) {
-//	                GemTestReporter.addTestStep("Navigate Forward", "Forward Navigation Successful", STATUS.PASS, DriverAction.takeSnapShot());
+	                GemTestReporter.addTestStep("Navigate Forward", "Forward Navigation Successful", STATUS.PASS, MobileAction.takeSnapShot());
             e.printStackTrace();
         }
 

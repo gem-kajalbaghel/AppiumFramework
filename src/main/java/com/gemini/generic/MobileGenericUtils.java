@@ -2,7 +2,11 @@ package com.gemini.generic;
 
 //import com.gemini.listners.PropertyListeners;
 
+import com.gemini.utils.TestCaseData;
+
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MobileGenericUtils extends MobileGlobalVar {
 
@@ -53,7 +57,6 @@ public class MobileGenericUtils extends MobileGlobalVar {
 
     public static String getappiumUrl() {
         String appiumUrl = MobileGlobalVar.appiumProperties.getProperty("appiumUrl");
-        System.out.println(appiumUrl);
 //	        String platformNameFromPropertiesFile = MobileGlobalVar.projectProperty.getProperty("platformName");
         String appium = appiumUrl != null ? appiumUrl : "http://0.0.0.0:4723/wd/hub/";
         return appiumUrl;
@@ -95,38 +98,47 @@ public class MobileGenericUtils extends MobileGlobalVar {
         return environmentName;
     }
 
-    public static void initializeQuanticGlobalVariables() {
+    public static void initializeMailingList() {
+        String mailProperties = MobileGlobalVar.projectName + "_Mail.properties";
+        MobileGlobalVar.mailingProperty = PropertyListeners.loadProjectProperties(
+                ClassLoader.getSystemResourceAsStream(mailProperties));
+        MobileGlobalVar.failMail = mailingProperty.getProperty("failMail");
+        MobileGlobalVar.ccMail = mailingProperty.getProperty("ccMail");
+        MobileGlobalVar.passMail = mailingProperty.getProperty("passMail");
+        MobileGlobalVar.mail = mailingProperty.getProperty("mail");
+    }
+
+
+    public static void initializeMobileGlobalVariables() {
         System.out.println("Main Branch");
         MobileGlobalVar.mobileProperty = PropertyListeners
                 .loadProjectProperties(ClassLoader.getSystemResourceAsStream("Mobile.properties"));
-//	        MobileGlobalVar.projectName = getProjectName();
+	        MobileGlobalVar.projectName = getProjectName();
         ProjectProperties.setProjectProperties(
                 ClassLoader.getSystemResourceAsStream(MobileGlobalVar.projectName + ".properties"));
         MobileGlobalVar.projectProperty = PropertyListeners.loadProjectProperties(
                 ClassLoader.getSystemResourceAsStream(MobileGlobalVar.projectName + ".properties"));
-//	        QuanticGlobalVar.environment = getProjectEnvironment();
+	        MobileGlobalVar.environment = getProjectEnvironment();
         MobileGlobalVar.reportName = getProjectReportName();
         MobileGlobalVar.testCaseFileName = getTestCaseFileName();
         MobileGlobalVar.testCaseDataJsonPath = System.getProperty("TestCaseDataJsonPath");
 //	        MobileGlobalVar.testCasesToRun = getTestCasesToRunFromSystemProperties();
-//	        MobileGlobalVar.browserInTest = getBrowserToTest();
-//	        String cucumberFlag = QuanticGlobalVar.quanticProperty.getProperty("cucumber");
-//	        if(cucumberFlag == null || !cucumberFlag.equalsIgnoreCase("y") ){
-//	            if (QuanticGlobalVar.testCaseDataJsonPath != null) {
-//	                TestCaseData.setProjectTestCaseData(QuanticGlobalVar.testCaseDataJsonPath);
-//	            } else {
-//	                TestCaseData
-//	                        .setProjectTestCaseData(ClassLoader.getSystemResourceAsStream(QuanticGlobalVar.testCaseFileName));
-//	            }
-//	        }
-//	        if (QuanticGlobalVar.projectProperty.getProperty("sendMail") == null) {
-//	            QuanticGlobalVar.sendMail = "true";
-//	        } else {
-//	            QuanticGlobalVar.sendMail = QuanticGlobalVar.projectProperty.getProperty("sendMail");
-//	        }
-//	        QuanticGlobalVar.reportLocation = getReportLocation();
-//	        initializeMailingList();
-//	    }
+	        String cucumberFlag = MobileGlobalVar.appiumProperties.getProperty("cucumber");
+	        if(cucumberFlag == null || !cucumberFlag.equalsIgnoreCase("y") ){
+	            if (MobileGlobalVar.testCaseDataJsonPath != null) {
+	                TestCaseData.setProjectTestCaseData(MobileGlobalVar.testCaseDataJsonPath);
+	            } else {
+	                TestCaseData
+                        .setProjectTestCaseData(ClassLoader.getSystemResourceAsStream(MobileGlobalVar.testCaseFileName));
+	            }
+	        }
+	        if (MobileGlobalVar.projectProperty.getProperty("sendMail") == null) {
+                MobileGlobalVar.sendMail = "true";
+	        } else {
+                MobileGlobalVar.sendMail = MobileGlobalVar.projectProperty.getProperty("sendMail");
+	        }
+    //    MobileGlobalVar.reportLocation = getReportLocation();
+	        initializeMailingList();
+	    }
 
     }
-}

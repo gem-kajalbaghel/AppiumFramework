@@ -19,5 +19,13 @@ public class MobileGlobalVar {
     public static String testCaseDataJsonPath;
     public static Properties appiumProperties;
     public static String appiumUrl;
+	public static String environment;
 
+	protected static String sendMail;
+	protected static Object reportLocation;
+	public static Properties mailingProperty;
+	public static String failMail;
+	public static String passMail;
+	public static String ccMail;
+	public static String mail;
 }
