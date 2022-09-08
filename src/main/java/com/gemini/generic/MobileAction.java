@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Timestamp;
-import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -21,11 +18,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.touch.TouchActions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.touch.WaitOptions;
-import io.appium.java_client.touch.offset.PointOption;
 
 public class MobileAction extends MobileGenericUtils {
 
@@ -129,6 +122,35 @@ public class MobileAction extends MobileGenericUtils {
         }
     }
 
+    public static void click(WebElement element) {
+        try {
+            element.click();
+        } catch (Exception var2) {
+            GemTestReporter.addTestStep("Some error occur while Click", "Error Occur", STATUS.FAIL);
+            var2.printStackTrace();
+        }
+    }
+
+    public static void click(WebElement element, String elementLabel) {
+        try {
+            element.click();
+            GemTestReporter.addTestStep("Click on ", "Click Successful on " + elementLabel, STATUS.PASS, takeSnapShot());
+        } catch (Exception var1) {
+            var1.printStackTrace();
+            GemTestReporter.addTestStep("Click on ", "Click Failed on " + elementLabel, STATUS.FAIL, takeSnapShot());
+        }
+    }
+
+    public static void click(WebElement element, String steps, String description) {
+        try {
+            element.click();
+            GemTestReporter.addTestStep(steps, description, STATUS.PASS, takeSnapShot());
+        } catch (Exception var1) {
+            var1.printStackTrace();
+            GemTestReporter.addTestStep(steps, description, STATUS.FAIL, takeSnapShot());
+        }
+    }
+
 
     public static void typeText(By locator, String textToEnter) {
         try {
@@ -162,6 +184,35 @@ public class MobileAction extends MobileGenericUtils {
         }
     }
 
+    public static void typeText(WebElement element, String textToEnter) {
+        try {
+            element.sendKeys(textToEnter);
+        } catch (Exception var2) {
+            GemTestReporter.addTestStep("Some error occur while Click", "Error Occur", STATUS.FAIL, takeSnapShot());
+            var2.printStackTrace();
+        }
+    }
+
+    public static void typeText(WebElement element, String textToEnter, String elementLabel) {
+        try {
+            element.sendKeys(textToEnter);
+            GemTestReporter.addTestStep("Type on " + elementLabel, "Type Text Successful<BR>Type Text ~" + textToEnter, STATUS.PASS, takeSnapShot());
+        } catch (Exception var1) {
+            var1.printStackTrace();
+            GemTestReporter.addTestStep("Type on " + elementLabel, "Type Text Failed<BR>Type Text ~" + textToEnter, STATUS.FAIL, takeSnapShot());
+        }
+    }
+
+    public static void typeText(WebElement element, String textToEnter, String steps, String description) {
+        try {
+            element.sendKeys(textToEnter);
+            GemTestReporter.addTestStep(steps, description, STATUS.PASS, takeSnapShot());
+        } catch (Exception var1) {
+            var1.printStackTrace();
+            GemTestReporter.addTestStep(steps, description, STATUS.FAIL, takeSnapShot());
+        }
+    }
+
     public static void clearText(By locator) {
         try {
             MobileDriverManager.getAppiumDriver().findElement(locator).clear();
@@ -175,6 +226,28 @@ public class MobileAction extends MobileGenericUtils {
     public static void clearText(By locator, boolean report) {
         try {
             MobileDriverManager.getAppiumDriver().findElement(locator).clear();
+            if (report) {
+                GemTestReporter.addTestStep("Clear Text", " Successful", STATUS.PASS, takeSnapShot());
+            }
+        } catch (Exception var3) {
+            var3.printStackTrace();
+            GemTestReporter.addTestStep("Some error occur", "Error Occur", STATUS.FAIL, takeSnapShot());
+        }
+    }
+
+    public static void clearText(WebElement element) {
+        try {
+            element.clear();
+            GemTestReporter.addTestStep("Clear Text", " Successful", STATUS.PASS, takeSnapShot());
+        } catch (Exception var2) {
+            var2.printStackTrace();
+            GemTestReporter.addTestStep("Some error occur", "Error Occur", STATUS.FAIL, takeSnapShot());
+        }
+    }
+
+    public static void clearText(WebElement element, boolean report) {
+        try {
+            element.clear();
             if (report) {
                 GemTestReporter.addTestStep("Clear Text", " Successful", STATUS.PASS, takeSnapShot());
             }
@@ -294,6 +367,15 @@ public class MobileAction extends MobileGenericUtils {
     }
 ////	////////////////////////////////////////NAVIGATION//////////////////////////////////////////////////////
 
+    public static void navigateBack() {
+        try {
+            MobileDriverManager.getAppiumDriver().navigate().back();
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Some error occur while Navigating Back", "Error Occur", STATUS.FAIL,
+                    takeSnapShot());
+            e.printStackTrace();
+        }
+    }
 
     public static void navigateBack(Boolean report) {
         try {
@@ -309,14 +391,11 @@ public class MobileAction extends MobileGenericUtils {
         }
     }
 
-    public static void refresh(Boolean report) {
+    public static void navigateForward() {
         try {
-            MobileDriverManager.getAppiumDriver().navigate().refresh();
-            if (report) {
-                GemTestReporter.addTestStep("Refresh Page", "Page Refresh Successful", STATUS.PASS, MobileAction.takeSnapShot());
-            }
+            MobileDriverManager.getAppiumDriver().navigate().forward();
         } catch (Exception e) {
-            GemTestReporter.addTestStep("Refresh Page", "Page Refresh Failed", STATUS.FAIL, MobileAction.takeSnapShot());
+            GemTestReporter.addTestStep("Some error occur while Navigating Forward", "Error Occur", STATUS.FAIL, takeSnapShot());
             e.printStackTrace();
         }
     }
@@ -333,6 +412,16 @@ public class MobileAction extends MobileGenericUtils {
         }
     }
 
+    public static void navigateToUrl(String url) {
+        try {
+            MobileDriverManager.getAppiumDriver().navigate().to(url);
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Some error occur while Navigate to URL", "Error Occur", STATUS.FAIL,
+                    takeSnapShot());
+            e.printStackTrace();
+        }
+    }
+
     public static void navigateToUrl(String url, Boolean report) {
         try {
             MobileDriverManager.getAppiumDriver().navigate().to(url);
@@ -344,7 +433,28 @@ public class MobileAction extends MobileGenericUtils {
                     MobileAction.takeSnapShot());
             e.printStackTrace();
         }
+    }
 
+    public static void refresh() {
+        try {
+            MobileDriverManager.getAppiumDriver().navigate().refresh();
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Some error occur while Refresh", "Error Occur", STATUS.FAIL,
+                    takeSnapShot());
+            e.printStackTrace();
+        }
+    }
+
+    public static void refresh(Boolean report) {
+        try {
+            MobileDriverManager.getAppiumDriver().navigate().refresh();
+            if (report) {
+                GemTestReporter.addTestStep("Refresh Page", "Page Refresh Successful", STATUS.PASS, MobileAction.takeSnapShot());
+            }
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Refresh Page", "Page Refresh Failed", STATUS.FAIL, MobileAction.takeSnapShot());
+            e.printStackTrace();
+        }
     }
 
     public static void LaunchURL(String url, Boolean report) {
