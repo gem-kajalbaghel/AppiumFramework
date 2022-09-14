@@ -1,29 +1,22 @@
 package com.gemini.generic;
 
-import java.awt.*;
+import com.gemini.reporting.GemTestReporter;
+import com.gemini.reporting.STATUS;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-import com.gemini.reporting.GemTestReporter;
-import com.gemini.reporting.STATUS;
-import io.appium.java_client.ios.IOSDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-
-//import com.qa.meld.utility.DriverManager;
-//import com.qa.meld.utility.MeldProperty;
-
-import io.appium.java_client.AppiumDriver;
-
-import io.appium.java_client.android.AndroidDriver;
-
 public class MobileDriverManager extends MobileGenericUtils{
 
+	//	static AppiumDriver driver;
 	private static ThreadLocal<AppiumDriver> driver = new ThreadLocal<AppiumDriver>();
 	public static void setAppiumDriver(AppiumDriver AppiumDriver) {
 		driver.set(AppiumDriver);
@@ -42,9 +35,10 @@ public class MobileDriverManager extends MobileGenericUtils{
 			e.printStackTrace();
 		}
 	}
-	
+
 
 	public static void driverInitialisation() throws FileNotFoundException, IOException {
+
 
 		try {
 			if(getplatformName().equalsIgnoreCase("Android")){
@@ -100,6 +94,6 @@ public class MobileDriverManager extends MobileGenericUtils{
 			e.printStackTrace();
 		}
 	}
-	
+
 
 }
