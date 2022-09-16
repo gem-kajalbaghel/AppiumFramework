@@ -126,6 +126,11 @@ public class MobileGenericUtils extends MobileGlobalVar {
         MobileGlobalVar.mail = mailingProperty.getProperty("mail");
     }
 
+    public static String getAppPackageName() {
+        String appPackageName = MobileGlobalVar.appiumProperties.getProperty("packageName");
+        return appPackageName;
+    }
+
     public static void initializeMobileGlobalVariables() {
         MobileGlobalVar.mobileProperty = PropertyListeners
                 .loadProjectProperties(ClassLoader.getSystemResourceAsStream("Mobile.properties"));

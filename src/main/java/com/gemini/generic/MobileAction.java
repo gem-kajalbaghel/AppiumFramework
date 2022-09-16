@@ -3,27 +3,42 @@ package com.gemini.generic;
 import com.gemini.reporting.GemTestReporter;
 import com.gemini.reporting.STATUS;
 import com.gemini.utils.GemJarGlobalVar;
+import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumBy;
+import io.appium.java_client.PerformsTouchActions;
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
+import io.appium.java_client.touch.LongPressOptions;
+import io.appium.java_client.touch.TapOptions;
+import io.appium.java_client.touch.offset.ElementOption;
+import io.appium.java_client.touch.offset.PointOption;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.interactions.touch.TouchActions;
+import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-public class MobileAction extends MobileGenericUtils {
+import static io.appium.java_client.touch.WaitOptions.waitOptions;
+import static java.time.Duration.ofMillis;
+import static java.time.Duration.ofSeconds;
 
+public class MobileAction extends MobileGenericUtils {
     public static void mobileProperty() {
         String rootDirectory = System.getProperty("user.dir");
         String resourceDirectory = rootDirectory + "/src/test/resources/";
@@ -31,14 +46,33 @@ public class MobileAction extends MobileGenericUtils {
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream(resourceDirectory + "AppiumSample.properties"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         MobileGlobalVar.appiumProperties = properties;
     }
 
+    public static String takeSnapShot() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String fileWithPath;
+        if (GemJarGlobalVar.reportLocation != null) {
+            fileWithPath = GemJarGlobalVar.reportLocation + "/SS/SS" + timestamp.getTime() + ".png";
+        } else {
+            fileWithPath = "report" + "/SS/SS" + timestamp.getTime() + ".png";
+        }
+        WebDriver webdriver = MobileDriverManager.getAppiumDriver();
+        TakesScreenshot scrShot = (TakesScreenshot) webdriver;
+        File SrcFile = (File) scrShot.getScreenshotAs(OutputType.FILE);
+        File DestFile = new File(fileWithPath);
+
+        try {
+            FileUtils.copyFile(SrcFile, DestFile);
+        } catch (IOException var7) {
+            var7.printStackTrace();
+        }
+
+        return "SS/SS" + timestamp.getTime() + ".png";
+    }
 
     public static WebElement getElement(By locator) {
         try {
@@ -153,7 +187,6 @@ public class MobileAction extends MobileGenericUtils {
         }
     }
 
-
     public static void typeText(By locator, String textToEnter) {
         try {
             WebElement element = getElement(locator);
@@ -259,82 +292,6 @@ public class MobileAction extends MobileGenericUtils {
         }
     }
 
-    public static void tap(By locator) {
-        try {
-            TouchActions action = new TouchActions(MobileDriverManager.getAppiumDriver());
-            WebElement element = getElement(locator);
-            action.singleTap(element);
-            action.perform();
-        } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
-            var2.printStackTrace();
-        }
-    }
-
-
-    public static void doubleTap(By locator) {
-        try {
-            TouchActions action = new TouchActions(MobileDriverManager.getAppiumDriver());
-            WebElement element = getElement(locator);
-            action.doubleTap(element);
-            action.perform();
-        } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
-            var2.printStackTrace();
-        }
-    }
-
-    public static void move(int X, int Y) {
-        try {
-            TouchActions action = new TouchActions(MobileDriverManager.getAppiumDriver());
-            //action.down(10, 10);
-            action.move(X, Y);
-            action.perform();
-        } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
-            var2.printStackTrace();
-        }
-    }
-
-    public static void moveUp(int X, int Y) {
-        try {
-            TouchActions action = new TouchActions(MobileDriverManager.getAppiumDriver());
-            //action.down(10, 10);
-            action.up(X, Y);
-            action.perform();
-        } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
-            var2.printStackTrace();
-        }
-    }
-
-    public static void moveDown(int X, int Y) {
-        try {
-            TouchActions action = new TouchActions(MobileDriverManager.getAppiumDriver());
-            //action.down(10, 10);
-            action.down(X, Y);
-            action.perform();
-        } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
-            var2.printStackTrace();
-        }
-    }
-
-    public static void longPress(By locator) {
-        try {
-            TouchActions action = new TouchActions(MobileDriverManager.getAppiumDriver());
-            WebElement element = getElement(locator);
-            action.longPress(element);
-            action.perform();
-
-
-        } catch (Exception var2) {
-            //GemTestReporter.addTestStep("Some error occur while Tap", "Error Occur", STATUS.FAIL, takeSnapShot());
-            var2.printStackTrace();
-        }
-    }
-
-
     public static void waitSec(long seconds) {
         try {
             Thread.sleep(seconds * 1000);
@@ -367,7 +324,28 @@ public class MobileAction extends MobileGenericUtils {
             e.printStackTrace();
         }
     }
-////	////////////////////////////////////////NAVIGATION//////////////////////////////////////////////////////
+
+    public static void refresh() {
+        try {
+            MobileDriverManager.getAppiumDriver().navigate().refresh();
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Some error occur while Refresh", "Error Occur", STATUS.FAIL,
+                    takeSnapShot());
+            e.printStackTrace();
+        }
+    }
+
+    public static void refresh(Boolean report) {
+        try {
+            MobileDriverManager.getAppiumDriver().navigate().refresh();
+            if (report) {
+                GemTestReporter.addTestStep("Refresh Page", "Page Refresh Successful", STATUS.PASS, MobileAction.takeSnapShot());
+            }
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Refresh Page", "Page Refresh Failed", STATUS.FAIL, MobileAction.takeSnapShot());
+            e.printStackTrace();
+        }
+    }
 
     public static void navigateBack() {
         try {
@@ -428,184 +406,12 @@ public class MobileAction extends MobileGenericUtils {
         try {
             MobileDriverManager.getAppiumDriver().navigate().to(url);
             if (report) {
-                GemTestReporter.addTestStep("Navigate Forward", "Forward Navigation Successful", STATUS.PASS, MobileAction.takeSnapShot());
-            }
-        } catch (Exception e) {
-            GemTestReporter.addTestStep("Navigate Forward", "Forward Navigation Failed", STATUS.FAIL,
-                    MobileAction.takeSnapShot());
-            e.printStackTrace();
-        }
-    }
-
-    public static void refresh() {
-        try {
-            MobileDriverManager.getAppiumDriver().navigate().refresh();
-        } catch (Exception e) {
-            GemTestReporter.addTestStep("Some error occur while Refresh", "Error Occur", STATUS.FAIL,
-                    takeSnapShot());
-            e.printStackTrace();
-        }
-    }
-
-    public static void refresh(Boolean report) {
-        try {
-            MobileDriverManager.getAppiumDriver().navigate().refresh();
-            if (report) {
-                GemTestReporter.addTestStep("Refresh Page", "Page Refresh Successful", STATUS.PASS, MobileAction.takeSnapShot());
-            }
-        } catch (Exception e) {
-            GemTestReporter.addTestStep("Refresh Page", "Page Refresh Failed", STATUS.FAIL, MobileAction.takeSnapShot());
-            e.printStackTrace();
-        }
-    }
-
-    public static void LaunchURL(String url, Boolean report) {
-        try {
-            MobileDriverManager.getAppiumDriver().get(url);
-            if (report) {
-                GemTestReporter.addTestStep("URL launch ", "URL launch Successful", STATUS.PASS, MobileAction.takeSnapShot());
-            }
-        } catch (Exception e) {
-            GemTestReporter.addTestStep("URL launch ", "URL launch Failed", STATUS.FAIL,
-                    MobileAction.takeSnapShot());
-            e.printStackTrace();
-        }
-    }
-    ////////////////////////Mouse///////////////////////////////////////////////////////
-
-    public static void doubleClick(WebElement element) {
-        try {
-            Actions act = new Actions(MobileDriverManager.getAppiumDriver());
-            act.doubleClick(element).perform();
-//	            GemTestReporter.addTestStep("Double Click on ", "Double Click Successful on " + elementLabel, STATUS.PASS,
-//	                    MobileAction.takeSnapShot());
-        } catch (Exception e) {
-            e.printStackTrace();
-//	            GemTestReporter.addTestStep("Double Click on ", "Double Click Failed on " + elementLabel, STATUS.FAIL,
-//	                    MobileAction.takeSnapShot());
-        }
-    }
-
-    public static WebElement scrollToElement(String text, Boolean report) {
-        try {
-            MobileDriverManager.getAppiumDriver().findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView" +
-                    "(text(\"" + text + "\"));"));
-            if (report) {
-                GemTestReporter.addTestStep("Scroll to ", "Scroll Successful", STATUS.PASS,
+                GemTestReporter.addTestStep("Navigate To URL", "Navigation To URL Successful", STATUS.PASS,
                         MobileAction.takeSnapShot());
             }
-        } catch (Exception var2) {
-            GemTestReporter.addTestStep("Scroll to ", "Scroll Failed", STATUS.FAIL,
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Navigate To URL", "Navigation To URL Failed", STATUS.FAIL,
                     MobileAction.takeSnapShot());
-            var2.printStackTrace();
-        }
-        return null;
-    }
-
-    //    moveToElement -> Move the mouse by an offset of the specificed element
-    public static void moveToElement(By locator, int xOffset, int yOffset) {
-        try {
-            Actions act = new Actions(MobileDriverManager.getAppiumDriver());
-            WebElement element = MobileDriverManager.getAppiumDriver().findElement(locator);
-            act.moveToElement(element, xOffset, yOffset);
-            act.perform();
-//            GemTestReporter.addTestStep("MoveToElement ", "MoveToElement Successful , STATUS.PASS,
-//                  MobileAction.takeSnapShot());
-
-        } catch (Exception e) {
-//            GemTestReporter.addTestStep("MoveToElement", "MoveToElement Failed on " , STATUS.FAIL,
-//                   MobileAction.takeSnapShot());
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void moveToElement(WebElement element, int xOffset, int yOffset) {
-        try {
-            Actions act = new Actions(MobileDriverManager.getAppiumDriver());
-            act.moveToElement(element, xOffset, yOffset);
-            //        GemTestReporter.addTestStep("MoveToElement ", "MoveToElement Successful , STATUS.PASS,
-//                  MobileAction.takeSnapShot());
-
-        } catch (Exception e) {
-            //            GemTestReporter.addTestStep("MoveToElement", "MoveToElement Failed on " , STATUS.FAIL,
-//                   MobileAction.takeSnapShot());
-            e.printStackTrace();
-        }
-    }
-
-    // ButtonDown->Click and hold the left mouse button at the current mouse coordinates
-    public static void buttonDown(By locator) {
-        try {
-            Actions act = new Actions(MobileDriverManager.getAppiumDriver());
-            WebElement element = MobileDriverManager.getAppiumDriver().findElement(locator);
-            act.moveToElement(element);
-            act.clickAndHold();
-            act.perform();
-            //        GemTestReporter.addTestStep("ButtonDown", "ButtonDown Successful , STATUS.PASS,
-//                  MobileAction.takeSnapShot());
-        } catch (Exception e) {
-            e.printStackTrace();
-            //            GemTestReporter.addTestStep("ButtonDown", "ButtonDown Failed on " , STATUS.FAIL,
-//                   MobileAction.takeSnapShot());
-        }
-    }
-
-    // ButtonUp->Releases the mouse button previously held
-//    Must be called after the buttonDown
-    public static void buttonUp(By locator, int xOffset, int yOffset) {
-        try {
-            Actions act = new Actions(MobileDriverManager.getAppiumDriver());
-            WebElement element = MobileDriverManager.getAppiumDriver().findElement(locator);
-            act.moveToElement(element);
-            act.clickAndHold();
-            act.moveToElement(element, xOffset, yOffset);
-            act.release();
-            act.perform();
-            //        GemTestReporter.addTestStep("ButtonUp", "ButtonUp Successful , STATUS.PASS,
-//                  MobileAction.takeSnapShot());
-        } catch (Exception e) {
-            e.printStackTrace();
-            //            GemTestReporter.addTestStep("ButtonUp", "ButtonUp Failed on " , STATUS.FAIL,
-//                   MobileAction.takeSnapShot());
-        }
-    }
-
-    public static void buttonUp(WebElement element, int xOffset, int yOffset) {
-        try {
-            Actions action = new Actions(MobileDriverManager.getAppiumDriver());
-            action.moveToElement(element);
-            action.clickAndHold();
-            action.moveToElement(element, xOffset, yOffset);
-            action.release();
-            action.perform();
-            //        GemTestReporter.addTestStep("ButtonUp", "ButtonUp Successful , STATUS.PASS,
-//                  MobileAction.takeSnapShot());
-        } catch (Exception e) {
-            e.printStackTrace();
-            //            GemTestReporter.addTestStep("ButtonUp", "ButtonUp Failed on " , STATUS.FAIL,
-//                   MobileAction.takeSnapShot());
-        }
-    }
-
-    /////////////////////////CLEAR/////////////////////////////////////////
-    public static void clear(By locator) {
-        try {
-            WebElement element = MobileDriverManager.getAppiumDriver().findElement(locator);
-            element.clear();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void lockDevice() {
-        try {
-
-            ((AndroidDriver) MobileDriverManager.getAppiumDriver()).lockDevice();
-
-            // getAppiumDriver.lockDevice();
-            // ((AndroidDriver) MobileDriverManager.getAppiumDriver()).lockDevice();
-        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -613,7 +419,7 @@ public class MobileAction extends MobileGenericUtils {
     public static void pressBackButton(Boolean report) {
         try {
             ((AndroidDriver) MobileDriverManager.getAppiumDriver()).pressKey(new KeyEvent(AndroidKey.BACK));
-            if (report){
+            if (report) {
                 GemTestReporter.addTestStep("Mobile Back ", "Mobile Back Successful", STATUS.PASS,
                         MobileAction.takeSnapShot());
             }
@@ -627,7 +433,7 @@ public class MobileAction extends MobileGenericUtils {
     public static void pressHomeButton(Boolean report) {
         try {
             ((AndroidDriver) MobileDriverManager.getAppiumDriver()).pressKey(new KeyEvent(AndroidKey.HOME));
-            if (report){
+            if (report) {
                 GemTestReporter.addTestStep("Mobile Home ", "Mobile Home Successful", STATUS.PASS,
                         MobileAction.takeSnapShot());
             }
@@ -637,63 +443,314 @@ public class MobileAction extends MobileGenericUtils {
             var2.printStackTrace();
         }
     }
-/////////////////////////////////////////////DRAGandDrop////////////////////////////////
 
-    public static void dragAndDrop(WebElement from, WebElement To, boolean report) {
+    public static void tap(By locator, Boolean report) {
         try {
-            WebElement from1 = MobileDriverManager.getAppiumDriver().findElement((By) from);
-            WebElement To1 = MobileDriverManager.getAppiumDriver().findElement((By) To);
-            Actions act = new Actions(MobileDriverManager.getAppiumDriver());
-            act.dragAndDrop(from1, To1).build().perform();
-//            if (report) {
-//                GemTestReporter.addTestStep("Drag and Drop", "Success", STATUS.PASS, MobileAction.takeSnapShot());
-//            }
+            TouchAction action = new TouchAction((PerformsTouchActions) MobileDriverManager.getAppiumDriver());
+            WebElement element = getElement(locator);
+            action.tap(new TapOptions().withElement(new ElementOption().withElement((element)))).perform();
+            if (report) {
+                GemTestReporter.addTestStep("Tap on ", "Tap on Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
+        } catch (Exception var2) {
+            GemTestReporter.addTestStep("Tap on ", "Tap on Failed", STATUS.FAIL,
+                    MobileAction.takeSnapShot());
+            var2.printStackTrace();
+        }
+    }
+
+    public static void doubleTapGesture(By locator, Boolean report) {
+        try {
+            WebElement element = getElement(locator);
+            ((JavascriptExecutor) MobileDriverManager.getAppiumDriver()).executeScript("mobile: doubleClickGesture",
+                    ImmutableMap.of(
+                            "elementId", ((RemoteWebElement) element).getId()
+                    )
+            );
+            if (report) {
+                GemTestReporter.addTestStep("Double Tap ", "Double Tap Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
         } catch (Exception e) {
             e.printStackTrace();
-//            GemTestReporter.addTestStep("Some error occur while Drag and drop", "Error Occur", STATUS.FAIL,
-//                    MobileAction.takeSnapShot());
+            GemTestReporter.addTestStep("Double Tap ", "Double Tap Failed", STATUS.FAIL,
+                    takeSnapShot());
         }
     }
 
-    // upload file
-    public static void fileUpload(WebElement element, String path) {
+    public static void longPress(By locator, Boolean report) {
         try {
-//            MobileDriverManager.getAppiumDriver().getElement((By) element).sendKeys(path);
-            getElement((By) element).sendKeys(path);
-//            GemTestReporter.addTestStep("File Upload", "Successfully", STATUS.PASS, takeSnapShot());
+            LongPressOptions longPressOptions = new LongPressOptions();
+            WebElement element = MobileAction.getElement(locator);
+            longPressOptions.withDuration(ofSeconds(2)).withElement(ElementOption.element(element));
+            TouchAction action = new TouchAction((PerformsTouchActions) MobileDriverManager.getAppiumDriver());
+            action.longPress(longPressOptions).release().perform();
+            if (report) {
+                GemTestReporter.addTestStep("Long Press ", "Long Press Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
+        } catch (Exception var2) {
+            GemTestReporter.addTestStep("Long Press ", "Long Press Failed", STATUS.FAIL,
+                    MobileAction.takeSnapShot());
+            var2.printStackTrace();
+        }
+    }
+
+    public static void longPressGesture(By locator, Boolean report) {
+        try {
+            WebElement element = getElement(locator);
+            ((JavascriptExecutor) MobileDriverManager.getAppiumDriver()).executeScript(
+                    "mobile: longClickGesture", ImmutableMap.of(
+                            "elementId", ((RemoteWebElement) element).getId(),
+                            "duration", 2000)
+            );
+            if (report) {
+                GemTestReporter.addTestStep("Long Press ", "Long Press Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
+        } catch (Exception var2) {
+            GemTestReporter.addTestStep("Long Press ", "Long Press Failed", STATUS.FAIL,
+                    MobileAction.takeSnapShot());
+            var2.printStackTrace();
+        }
+    }
+
+    public static void moveTo(float start_X, double start_Y, double end_X, double end_Y, Boolean report) {
+        try {
+            TouchAction touch = new TouchAction((PerformsTouchActions) MobileDriverManager.getAppiumDriver());
+            touch.press(PointOption.point(getXCoOrdinate(start_X), (getYCoOrdinate(start_Y))))
+                    .waitAction(waitOptions(ofSeconds(2)))
+                    .moveTo(PointOption.point(getXCoOrdinate(end_X), (getYCoOrdinate(end_Y)))).release().perform();
+            if (report) {
+                GemTestReporter.addTestStep("Move To ", "Move to Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
         } catch (Exception e) {
+            GemTestReporter.addTestStep("Move To ", "Move to Failes", STATUS.FAIL,
+                    MobileAction.takeSnapShot());
             e.printStackTrace();
-//            GemTestReporter.addTestStep("Some error occur", "Error Occur", STATUS.FAIL,
-//            MobileDriverManager.getAppiumDriver().takeSnapShot());
         }
     }
 
-
-    public static String takeSnapShot() {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        String fileWithPath;
-        if (GemJarGlobalVar.reportLocation != null) {
-            fileWithPath = GemJarGlobalVar.reportLocation + "/SS/SS" + timestamp.getTime() + ".png";
-        } else {
-            fileWithPath = "report" + "/SS/SS" + timestamp.getTime() + ".png";
-        }
-        WebDriver webdriver = MobileDriverManager.getAppiumDriver();
-        TakesScreenshot scrShot = (TakesScreenshot) webdriver;
-        File SrcFile = (File) scrShot.getScreenshotAs(OutputType.FILE);
-        File DestFile = new File(fileWithPath);
-
+    public static int getXCoOrdinate(double X_position) {
+        int widthCoordinate = 0;
         try {
-            FileUtils.copyFile(SrcFile, DestFile);
-        } catch (IOException var7) {
-            var7.printStackTrace();
+            Dimension dim = MobileDriverManager.getAppiumDriver().manage().window().getSize();
+            int width = dim.width;
+            widthCoordinate = (int) (width * (X_position));
+        } catch (Exception var2) {
+            GemTestReporter.addTestStep("Some error occur while getting X CoOrdinate", "Error Occur", STATUS.FAIL, takeSnapShot());
+            var2.printStackTrace();
         }
-
-        return "SS/SS" + timestamp.getTime() + ".png";
+        return widthCoordinate;
     }
 
+    public static int getYCoOrdinate(double Y_position) {
+        int heightCoordinate = 0;
+        try {
+            Dimension dim = MobileDriverManager.getAppiumDriver().manage().window().getSize();
+            int height = dim.height;
+            heightCoordinate = (int) (height * (Y_position));
+        } catch (Exception var2) {
+            GemTestReporter.addTestStep("Some error occur while getting Y CoOrdinate", "Error Occur", STATUS.FAIL, takeSnapShot());
+            var2.printStackTrace();
+        }
+        return heightCoordinate;
+    }
+
+    public static void swipeUp(By locator, Boolean report) {
+        try {
+            WebElement ele = getElement(locator);
+            int centerX = ele.getRect().x + (ele.getSize().width / 2);
+            double startY = ele.getRect().y + (ele.getSize().height * 0.9);
+            double endY = ele.getRect().y + (ele.getSize().height * 0.1);
+
+            TouchAction swipe = new TouchAction((PerformsTouchActions) MobileDriverManager.getAppiumDriver())
+                    .press(PointOption.point(centerX, (int) startY))
+                    .waitAction(waitOptions(ofMillis(800)))
+                    .moveTo(PointOption.point(centerX, (int) endY))
+                    .release()
+                    .perform();
+            if (report) {
+                GemTestReporter.addTestStep("Swipe Up", "Swipe Up Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Swipe UP", "Swipe Up Failed", STATUS.FAIL,
+                    takeSnapShot());
+            e.printStackTrace();
+        }
+    }
+
+    public static void swipeDown(By locator, Boolean report) {
+        try {
+            WebElement ele = MobileAction.getElement(locator);
+            int centerX = ele.getRect().x + (ele.getSize().width / 2);
+            double startY = ele.getRect().y + (ele.getSize().height * 0.1);
+            double endY = ele.getRect().y + (ele.getSize().height * 0.9);
+
+            TouchAction swipe = new TouchAction((PerformsTouchActions) MobileDriverManager.getAppiumDriver())
+                    .press(PointOption.point(centerX, (int) startY))
+                    .waitAction(waitOptions(ofMillis(800)))
+                    .moveTo(PointOption.point(centerX, (int) endY))
+                    .release()
+                    .perform();
+            if (report) {
+                GemTestReporter.addTestStep("Swipe Down", "Swipe Down Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Swipe Down", "Swipe Down Failed", STATUS.FAIL,
+                    takeSnapShot());
+            e.printStackTrace();
+        }
+    }
+
+    public static void swipeLeft(By locator, Boolean report) {
+        try {
+            WebElement ele = MobileAction.getElement(locator);
+            int centerY = ele.getRect().y + (ele.getSize().height / 2);
+            double startX = ele.getRect().x + (ele.getSize().width * 0.9);
+            double endX = ele.getRect().x + (ele.getSize().width * 0.1);
+
+            TouchAction swipe = new TouchAction((PerformsTouchActions) MobileDriverManager.getAppiumDriver())
+                    .press(PointOption.point((int) startX, centerY))
+                    .waitAction(waitOptions(ofMillis(800)))
+                    .moveTo(PointOption.point((int) endX, centerY))
+                    .release()
+                    .perform();
+            if (report) {
+                GemTestReporter.addTestStep("Swipe Left", "Swipe Left Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Swipe Left", "Swipe Left Failed", STATUS.FAIL,
+                    takeSnapShot());
+            e.printStackTrace();
+        }
+    }
+
+    public static void swipeRight(By locator, Boolean report) {
+        try {
+            WebElement ele = MobileAction.getElement(locator);
+            int centerY = ele.getRect().y + (ele.getSize().height / 2);
+            double startX = ele.getRect().x + (ele.getSize().width * 0.1);
+            double endX = ele.getRect().x + (ele.getSize().width * 0.9);
+
+            TouchAction swipe = new TouchAction((PerformsTouchActions) MobileDriverManager.getAppiumDriver())
+                    .press(PointOption.point((int) startX, centerY))
+                    .waitAction(waitOptions(ofMillis(800)))
+                    .moveTo(PointOption.point((int) endX, centerY))
+                    .release()
+                    .perform();
+            if (report) {
+                GemTestReporter.addTestStep("Swipe Right", "Swipe Right Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Swipe Right", "Swipe Right Failed", STATUS.FAIL,
+                    takeSnapShot());
+            e.printStackTrace();
+        }
+    }
+
+    public static double getElementXCordinate(By locator, double coOrdinateposition) {
+        WebElement element = MobileAction.getElement(locator);
+        double elementXCoOrdinate = element.getRect().x + (element.getSize().width * coOrdinateposition);
+        return elementXCoOrdinate;
+    }
+
+    public static double getElementYCordinate(By locator, double coOrdinateposition) {
+        WebElement element = MobileAction.getElement(locator);
+        double elementYCoOrdinate = element.getRect().y + (element.getSize().height * coOrdinateposition);
+        return elementYCoOrdinate;
+    }
+
+    public static void scrollTo(By locator, double start_X, double start_Y, double end_X, double end_Y,
+                                Boolean report) {
+        try {
+            double startX = getElementXCordinate(locator, start_X);
+            double endX = getElementXCordinate(locator, end_X);
+            double startY = getElementYCordinate(locator, start_Y);
+            double endY = getElementYCordinate(locator, end_Y);
+            PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+            Sequence swipe = new Sequence(finger, 1);
+            swipe.addAction(finger.createPointerMove(Duration.ofSeconds(0), PointerInput.Origin.viewport(), (int) startX, (int) startY));
+            swipe.addAction(finger.createPointerDown(0));
+            swipe.addAction(finger.createPointerMove(Duration.ofMillis(1000), PointerInput.Origin.viewport(), (int) endX, (int) endY));
+            swipe.addAction(finger.createPointerUp(0));
+            MobileDriverManager.getAppiumDriver().perform(Arrays.asList(swipe));
+            if(report){
+                GemTestReporter.addTestStep("Scroll ", "Scroll Successful", STATUS.PASS, takeSnapShot());
+            }
+        } catch (Exception e){
+            GemTestReporter.addTestStep("Scroll ", "Scroll Failed", STATUS.FAIL, takeSnapShot());
+            e.printStackTrace();
+        }
+    }
+
+    public static void scrollToElement(String text, Boolean report) {
+        try {
+            MobileDriverManager.getAppiumDriver().findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView" +
+                    "(text(\"" + text + "\"));"));
+            if (report) {
+                GemTestReporter.addTestStep("Scroll to ", "Scroll Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
+        } catch (Exception var2) {
+            GemTestReporter.addTestStep("Scroll to ", "Scroll Failed", STATUS.FAIL,
+                    MobileAction.takeSnapShot());
+            var2.printStackTrace();
+        }
+    }
+
+    public static void dragAndDrop(By sourceLocator, By targetLocator, Boolean report) {
+        try {
+            WebElement src = getElement(sourceLocator);
+            WebElement dest = getElement(targetLocator);
+
+            TouchAction swipe = new TouchAction((PerformsTouchActions) MobileDriverManager.getAppiumDriver())
+                    .press(ElementOption.element(src))
+                    .waitAction(waitOptions(ofSeconds(2)))
+                    .moveTo(ElementOption.element(dest))
+                    .release()
+                    .perform();
+            if (report) {
+                GemTestReporter.addTestStep("Drag and Drop", "Drag and Drop Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Drag and Drop", "Drag and Drop Failed  ", STATUS.FAIL,
+                    takeSnapShot());
+            e.printStackTrace();
+        }
+    }
+
+    public static void switchToWebView() {
+        ((AndroidDriver) MobileDriverManager.getAppiumDriver()).context("WEBVIEW_" + getAppPackageName());
+    }
+
+    public static void switchToNativeView() {
+        ((AndroidDriver) MobileDriverManager.getAppiumDriver()).context("NATIVE_APP");
+    }
+
+    public static String getTitle() {
+        return MobileDriverManager.getAppiumDriver().getTitle();
+    }
+
+    public static String getTitle(Boolean report) {
+        try {
+            String title = MobileDriverManager.getAppiumDriver().getTitle();
+            if (report) {
+                GemTestReporter.addTestStep("Get Title", "Title ~" + title, STATUS.PASS, takeSnapShot());
+            }
+            return title;
+        } catch (Exception var3) {
+            GemTestReporter.addTestStep("Get Title", "Get Title Failed", STATUS.FAIL, takeSnapShot());
+            var3.printStackTrace();
+            return null;
+        }
+    }
 
 }
-
-
-
-
