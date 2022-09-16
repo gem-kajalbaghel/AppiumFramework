@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79b94f2f-5ed0-49fb-ac80-15130eae841c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_7_2022_6_33_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_7_2022_6_33_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileCucumberBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileCucumberBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileGenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileGenericUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
