@@ -15,12 +15,15 @@ import io.appium.java_client.touch.TapOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 import io.appium.java_client.touch.offset.PointOption;
 import org.apache.commons.io.FileUtils;
+import org.junit.ComparisonFailure;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
-import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import sun.jvm.hotspot.utilities.AssertionFailure;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +40,8 @@ import java.util.concurrent.TimeUnit;
 import static io.appium.java_client.touch.WaitOptions.waitOptions;
 import static java.time.Duration.ofMillis;
 import static java.time.Duration.ofSeconds;
+import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertEquals;
 
 public class MobileAction extends MobileGenericUtils {
     public static void mobileProperty() {
@@ -681,10 +686,10 @@ public class MobileAction extends MobileGenericUtils {
             swipe.addAction(finger.createPointerMove(Duration.ofMillis(1000), PointerInput.Origin.viewport(), (int) endX, (int) endY));
             swipe.addAction(finger.createPointerUp(0));
             MobileDriverManager.getAppiumDriver().perform(Arrays.asList(swipe));
-            if(report){
+            if (report) {
                 GemTestReporter.addTestStep("Scroll ", "Scroll Successful", STATUS.PASS, takeSnapShot());
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             GemTestReporter.addTestStep("Scroll ", "Scroll Failed", STATUS.FAIL, takeSnapShot());
             e.printStackTrace();
         }
@@ -750,6 +755,112 @@ public class MobileAction extends MobileGenericUtils {
             GemTestReporter.addTestStep("Get Title", "Get Title Failed", STATUS.FAIL, takeSnapShot());
             var3.printStackTrace();
             return null;
+        }
+    }
+
+
+    public static String getAttributeValue(By locator, String attribute) {
+        try {
+            WebElement element = getElement(locator);
+            return element.getAttribute(attribute);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void waitUntilElementVisible(By locator, long seconds) {
+        try {
+            WebDriverWait wait = new WebDriverWait(MobileDriverManager.getAppiumDriver(),
+                    Duration.ofSeconds(seconds));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Error occur", "Fail to Load", STATUS.FAIL,
+                    MobileAction.takeSnapShot());
+        }
+    }
+
+    public static void waitUntilElementVisible(By locator, long seconds, String messageOnFail) {
+        try {
+            WebDriverWait wait = new WebDriverWait(MobileDriverManager.getAppiumDriver(),
+                    Duration.ofSeconds(seconds));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        } catch (TimeoutException e) {
+            GemTestReporter.addTestStep("Error occur", messageOnFail, STATUS.FAIL,
+                    MobileAction.takeSnapShot());
+        }
+    }
+
+    public static void waitUntilElementClickable(By locator, long seconds) {
+        try {
+            WebDriverWait wait = new WebDriverWait(MobileDriverManager.getAppiumDriver(),
+                    Duration.ofSeconds(seconds));
+            wait.until(ExpectedConditions.elementToBeClickable(locator));
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Error occur", "Fail to Load", STATUS.FAIL,
+                    MobileAction.takeSnapShot());
+        }
+    }
+
+    public static void waitUntilElementClickable(By locator, long seconds, String messageOnFail) {
+        try {
+            WebDriverWait wait = new WebDriverWait(MobileDriverManager.getAppiumDriver(),
+                    Duration.ofSeconds(seconds));
+            wait.until(ExpectedConditions.elementToBeClickable(locator));
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Error occur", messageOnFail, STATUS.FAIL,
+                    MobileAction.takeSnapShot());
+        }
+    }
+
+    public static void verifyEquals(By locator, String expected) {
+        String actual = "";
+        try {
+            actual = getElementText(locator);
+            assertEquals(expected, actual);
+            GemTestReporter.addTestStep("Verifying Text", "Expected: " + expected + "<br>"
+                    + "Actual: " + actual, STATUS.PASS, takeSnapShot());
+        } catch (ComparisonFailure e) {
+            GemTestReporter.addTestStep("Verifying Text", "Expected: " + expected + "<br>"
+                    + "Actual: " + actual, STATUS.FAIL, takeSnapShot());
+        }
+    }
+
+    public static void swipeGesture(By locator, String direction, float percent, Boolean report) {
+        // direction - up, down, left and right (case-insensitive)
+        try {
+            ((JavascriptExecutor) MobileDriverManager.getAppiumDriver()).executeScript("mobile: swipeGesture", ImmutableMap.of(
+                    "elementId", ((RemoteWebElement) getElement(locator)).getId(),
+                    "direction", direction,
+                    "percent", percent
+            ));
+            if (report) {
+                GemTestReporter.addTestStep("Swipe " + direction, "Swipe " + direction + " Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Swipe " + direction, "Swipe " + direction + " Failed", STATUS.FAIL,
+                    takeSnapShot());
+            e.printStackTrace();
+        }
+    }
+
+    public static void swipeGesture(By locator, String direction, Boolean report) {
+        // direction - up, down, left and right (case-insensitive)
+        try {
+            ((JavascriptExecutor) MobileDriverManager.getAppiumDriver()).executeScript("mobile: swipeGesture", ImmutableMap.of(
+                    "elementId", ((RemoteWebElement) getElement(locator)).getId(),
+                    "direction", direction,
+                    "percent", 0.70
+            ));
+            if (report) {
+                GemTestReporter.addTestStep("Swipe " + direction, "Swipe " + direction + " Successful", STATUS.PASS,
+                        MobileAction.takeSnapShot());
+            }
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Swipe " + direction, "Swipe " + direction + " Failed", STATUS.FAIL,
+                    takeSnapShot());
+            e.printStackTrace();
         }
     }
 

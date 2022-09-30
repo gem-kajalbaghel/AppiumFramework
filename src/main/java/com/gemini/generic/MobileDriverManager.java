@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MobileDriverManager extends MobileGenericUtils{
 
-	//	static AppiumDriver driver;
 	private static ThreadLocal<AppiumDriver> driver = new ThreadLocal<AppiumDriver>();
 	public static void setAppiumDriver(AppiumDriver AppiumDriver) {
 		driver.set(AppiumDriver);
