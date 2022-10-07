@@ -4,17 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79b94f2f-5ed0-49fb-ac80-15130eae841c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/GemjarReport.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_seleniumhq_selenium_selenium_support_4_4_0.xml" beforeDir="false" />
+    <list default="true" id="40609d35-c0ed-49b5-8fa2-3046ea05cfd8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appiumTrial.iml" beforeDir="false" afterPath="$PROJECT_DIR$/appiumTrial.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileDriverManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileDriverManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/GemjarReport.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/GemjarReport.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gemini/generic/MobileAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gemini/generic/MobileAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileGenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gemini/generic/MobileGenericUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/gemini/generic/MobileDriverManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gemini/generic/MobileDriverManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gemini/generic/MobileGenericUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gemini/generic/MobileGenericUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,49 +36,27 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectId" id="2EqActoqMsimwO6u91zrEUVP6n2" />
+  <component name="ProjectId" id="2FkRRgYngimvhaCqQuO0KF57B45" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/kajal.baghel/eclipse-workspace/Mobile GemJar/src/main/resources"
+    "RunOnceActivity.ShowReadmeOnStart": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\kajal.baghel\eclipse-workspace\Mobile GemJar\src\main\resources" />
-    </key>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="79b94f2f-5ed0-49fb-ac80-15130eae841c" name="Changes" comment="" />
-      <created>1663312824074</created>
+      <changelist id="40609d35-c0ed-49b5-8fa2-3046ea05cfd8" name="Changes" comment="" />
+      <created>1665034095680</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1663312824074</updated>
+      <updated>1665034095680</updated>
     </task>
     <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="CUSTOM_BOOLEAN_PROPERTIES">
-                <map>
-                  <entry key="Show.Git.Branches" value="false" />
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
 </project>

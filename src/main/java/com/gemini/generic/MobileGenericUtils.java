@@ -152,4 +152,32 @@ public class MobileGenericUtils extends MobileGlobalVar {
         initializeMailingList();
 
     }
+    /////////browser-stack///////////////
+
+    public static String getCloudName() {
+        System.out.println(MobileGlobalVar.appiumProperties.getProperty("cloudName"));
+        return MobileGlobalVar.appiumProperties.getProperty("cloudName");
+    }
+    public static String getBrowserStackUserName() {
+        System.out.println(MobileGlobalVar.appiumProperties.getProperty("browserStackUserName"));
+        return MobileGlobalVar.appiumProperties.getProperty("browserStackUserName");
+    }
+
+    public static String getBrowserStackAccessKey() {
+        System.out.println(MobileGlobalVar.appiumProperties.getProperty("browserStackAccessKey"));
+        return MobileGlobalVar.appiumProperties.getProperty("browserStackAccessKey");
+    }
+
+    public static String getBrowserStackURL() {
+        String url = MobileGlobalVar.appiumProperties.getProperty("browserStackUrl");
+        url = url.replace("username", getBrowserStackUserName());
+        url = url.replace("accesskey", getBrowserStackAccessKey());
+        System.out.println(url);
+        return url;
+    }
+
+    public static String getBrowserStackApp() {
+        System.out.println(MobileGlobalVar.appiumProperties.getProperty("browserStackApp"));
+        return MobileGlobalVar.appiumProperties.getProperty("browserStackApp");
+    }
 }

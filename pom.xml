@@ -23,7 +23,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
-            <scope>test</scope>
+
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
@@ -94,15 +94,8 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
             <version>7.0.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-        </dependency>
 
-
+        </dependency>
     </dependencies>
 
     <build>

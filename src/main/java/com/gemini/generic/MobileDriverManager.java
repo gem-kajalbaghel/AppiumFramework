@@ -14,85 +14,141 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-public class MobileDriverManager extends MobileGenericUtils{
+public class MobileDriverManager extends MobileGenericUtils {
 
-	private static ThreadLocal<AppiumDriver> driver = new ThreadLocal<AppiumDriver>();
-	public static void setAppiumDriver(AppiumDriver AppiumDriver) {
-		driver.set(AppiumDriver);
-	}
+    private static ThreadLocal<AppiumDriver> driver = new ThreadLocal<AppiumDriver>();
 
-	public static AppiumDriver getAppiumDriver() {
-		return driver.get();
-	}
+    public static void setAppiumDriver(AppiumDriver AppiumDriver) {
+        driver.set(AppiumDriver);
+    }
 
-	public static void closeDriver() {
-		try {
-			GemTestReporter.addTestStep("Close Driver", "Driver Close Successful", STATUS.PASS);
-			getAppiumDriver().quit();
-		} catch (Exception e) {
-			GemTestReporter.addTestStep("Close Driver", "Driver Close Failed", STATUS.FAIL);
-			e.printStackTrace();
-		}
-	}
+    public static AppiumDriver getAppiumDriver() {
+        return driver.get();
+    }
 
-
-	public static void driverInitialisation() throws FileNotFoundException, IOException {
+    public static void closeDriver() {
+        try {
+            GemTestReporter.addTestStep("Close Driver", "Driver Close Successful", STATUS.PASS);
+            getAppiumDriver().quit();
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Close Driver", "Driver Close Failed", STATUS.FAIL);
+            e.printStackTrace();
+        }
+    }
 
 
-		try {
-			if(getplatformName().equalsIgnoreCase("Android")){
-				androidStart();
-			} else if (getplatformName().equalsIgnoreCase("iOS")) {
-				iOSStart();
-			}
-			getAppiumDriver().manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
+    public static void driverInitialisation() throws FileNotFoundException, IOException {
+        try {
+            String platform = getplatformName().toLowerCase(); //android
+            String cloud = getCloudName().toLowerCase(); // perfecto
+            if (platform.equals("android")) {
+                switch (cloud) {
+                    case "perfecto":
+                        System.out.println("perfecto_android");
+//						perfectoAndroidStart();
+                        break;
+                    case "browserstack":
+                        System.out.println("browserstack_android");
+                        //TODO have to add browserstack_android
+                        browserStackAndroidStart();
+                        break;
+                    default:
+                        System.out.println("local_android");
+                        androidStart();
+                        break;
+                }
+            } else if (platform.equals("ios")) {
+                switch (cloud) {
+                    case "perfecto":
+                        System.out.println("perfecto_ios");
+                        //TODO have to add perfecto_ios
+                        break;
+                    case "browserstack":
+                        System.out.println("browserstack_ios");
+                        //TODO have to add browserstack_ios
+                        break;
+                    default:
+                        System.out.println("local_ios");
+                        iOSStart();
+                        break;
+                }
+            } else {
+                System.out.println("android");
+                androidStart();
+            }
 
-		} catch (Exception e) {
+//            if (getplatformName().equalsIgnoreCase("Android")) {
+//                androidStart();
+//            } else if (getplatformName().equalsIgnoreCase("iOS")) {
+//                iOSStart();
+//            }
+            getAppiumDriver().manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
 
-		}
-	}
+        } catch (Exception e) {
+            System.out.println("Error occur while initializing driver");
+        }
+    }
 
 
-	// shubham
-	public static void androidStart() {
-		try {
-			File classpathRoot = new File(System.getProperty("user.dir"));
-			File appDir = new File(classpathRoot, "/app");
-			File app = new File(appDir, getapp());
+    // shubham
+    public static void androidStart() {
+        try {
+            File classpathRoot = new File(System.getProperty("user.dir"));
+            File appDir = new File(classpathRoot, "/app");
+            File app = new File(appDir, getapp());
 
-			DesiredCapabilities cap = new DesiredCapabilities();
-			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, getplatformName());
-			cap.setCapability(MobileCapabilityType.PLATFORM_VERSION, getplatformVersion());
-			cap.setCapability(MobileCapabilityType.DEVICE_NAME, getdeviceName());
-			cap.setCapability(MobileCapabilityType.UDID, getudid());
-			cap.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
+            DesiredCapabilities cap = new DesiredCapabilities();
+            cap.setCapability(MobileCapabilityType.PLATFORM_NAME, getplatformName());
+            cap.setCapability(MobileCapabilityType.PLATFORM_VERSION, getplatformVersion());
+            cap.setCapability(MobileCapabilityType.DEVICE_NAME, getdeviceName());
+            cap.setCapability(MobileCapabilityType.UDID, getudid());
+            cap.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
 
-			setAppiumDriver(new AndroidDriver(new URL(getappiumUrl()), cap));
+            setAppiumDriver(new AndroidDriver(new URL(getappiumUrl()), cap));
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	public static void iOSStart() {
-		try {
-			File classpathRoot = new File(System.getProperty("user.dir"));
-			File appDir = new File(classpathRoot, "/app");
-			File app = new File(appDir, getapp());
+    public static void iOSStart() {
+        try {
+            File classpathRoot = new File(System.getProperty("user.dir"));
+            File appDir = new File(classpathRoot, "/app");
+            File app = new File(appDir, getapp());
 
-			DesiredCapabilities cap = new DesiredCapabilities();
-			cap.setCapability(MobileCapabilityType.PLATFORM_NAME, getplatformName());
-			cap.setCapability(MobileCapabilityType.PLATFORM_VERSION, getplatformVersion());
-			cap.setCapability(MobileCapabilityType.DEVICE_NAME, getdeviceName());
-			cap.setCapability(MobileCapabilityType.UDID, getudid());
-			cap.setCapability("bundleId", getBundelID());
-			cap.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
+            DesiredCapabilities cap = new DesiredCapabilities();
+            cap.setCapability(MobileCapabilityType.PLATFORM_NAME, getplatformName());
+            cap.setCapability(MobileCapabilityType.PLATFORM_VERSION, getplatformVersion());
+            cap.setCapability(MobileCapabilityType.DEVICE_NAME, getdeviceName());
+            cap.setCapability(MobileCapabilityType.UDID, getudid());
+            cap.setCapability("bundleId", getBundelID());
+            cap.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
 
-			setAppiumDriver(new IOSDriver(new URL(getappiumUrl()), cap));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+            setAppiumDriver(new IOSDriver(new URL(getappiumUrl()), cap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //////////////////Browser stack/////////////
+    public static void browserStackAndroidStart() {
+        try {
+            String url = getBrowserStackURL();
+
+            DesiredCapabilities cap = new DesiredCapabilities();
+            cap.setCapability(MobileCapabilityType.PLATFORM_NAME, getplatformName());
+            cap.setCapability(MobileCapabilityType.PLATFORM_VERSION, getplatformVersion());
+            cap.setCapability(MobileCapabilityType.DEVICE_NAME, getdeviceName());
+            cap.setCapability(MobileCapabilityType.APP, getBrowserStackApp());
+            cap.setCapability("project", getProjectName());
+            System.out.println(cap.toString());
+
+            setAppiumDriver(new AndroidDriver(new URL(url), cap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
